@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Airforce Museum</title>
+    <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body>
+
+    <header>
+        <h1>Airforce Museum</h1>
+        <p>Your Gateway to Aviation Excellence</p>
+    </header>
+
+    <nav>
+        <ul>
+            <li><a href="#home">Home</a></li>
+            <li><a href="#modern-aircraft">Modern Aircraft</a></li>
+            <li><a href="#historical-aircraft">Historical Aircraft</a></li>
+            <li><a href="#news">News</a></li>
+        </ul>
+    </nav>
+
+    <section id="hero">
+        <img src="images/fighter_jet1_f22.png" alt="F-22 Raptor in action">
+        <div class="hero-content">
+            <h2 class="animated-text">Explore the Sky with Airforce Museum</h2>
+            <p class="animated-text">Your go-to source for discovering the marvels of aviation.</p>
+            <a href="#modern-aircraft" class="cta-button">Get Started</a>
+        </div>
+    </section>
+
+    <section id="featured">
+        <article class="animated-card">
+            <img src="images/fighter_jet2_f35.png" alt="Modern Military">
+            <h3>Modern Military</h3>
+            <p>Discover the latest advancements in modern aircraft technology.</p>
+            <a href="#moder-aircraft">Explore</a>
+        </article>
+
+        <article class="animated-card">
+            <img src="images/aircraft1_sr71blackbird.png" alt="Old Military">
+            <h3>Old Military</h3>
+            <p>Uncover the rich history behind legendary aircraft from the past.</p>
+            <a href="#historical-aircraft">Discover</a>
+        </article>
+
+        <article class="animated-card">
+            <img src="images/aircraft_c130hercules.png" alt="Other Aircraft">
+            <h3>Other Aircraft</h3>
+            <p>Cool other aircraft</p>
+            <a href="#modern-aircraft">Explore</a>
+        </article>
+    </section>
+<div class="news">
+    <h1>Latest News</h1>
+    <div class="error-message" id="error-message">
+        <p>Failed to load data. The server may be offline.</p>
+    </div>
+    <div class="loading" id="loading-spinner"></div>
+    <section id="latest-news">
+        
+    </section>
+</div>
+
+    <section id="about">
+        <h2>About Us</h2>
+        <p>Airforce Museum is dedicated to providing enthusiasts with accurate and fascinating information about the
+            Airforce aircraft.</p>
+        <p>Contact us: codemark.app@gmail.com</p>
+    </section>
+
+    <footer>
+        <p>This website is a project of CodeMark visit <a href="https://codemark.app/projects" target="_blank">codemark.app/projects</a>
+            for more projects.</p>
+    </footer>
+
+    <script src="./js/animations.js"></script>
+
+    <script>
+       document.addEventListener('DOMContentLoaded', () => {
+    const loadingSpinner = document.getElementById('loading-spinner');
+    const errorMessage = document.getElementById('error-message');
+
+    // Show loading spinner
+    loadingSpinner.style.display = 'block';
+
+    fetch('http://localhost:3000/scrape')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            // Hide loading spinner once data is fetched
+            loadingSpinner.style.display = 'none';
+
+            displayScrapedData(data);
+        })
+        .catch(error => {
+            // Hide loading spinner on error
+            loadingSpinner.style.display = 'none';
+
+            // Show error message
+            errorMessage.style.display = 'block';
+            console.error('Error fetching data:', error);
+        });
+});
+
+function displayScrapedData(data) {
+    const container = document.getElementById('latest-news');
+    data.forEach(item => {
+        const articleDiv = document.createElement('div');
+        articleDiv.innerHTML = `
+            <p>${item.articleTitle}</p>
+            <img src="${item.imageSource}" alt="${item.articleTitle}">
+            <p><a href="${item.articleLink}" target="_blank">Read More</a></p>
+        `;
+
+        container.appendChild(articleDiv);
+    });
+}
+
+        function toggleDarkTheme() {
+            document.body.classList.toggle('dark-theme');
+            document.querySelector('header').classList.toggle('dark-theme');
+            document.querySelector('nav').classList.toggle('dark-theme');
+        }
+        document.querySelector('nav').addEventListener('click', function () {
+            this.classList.toggle('show');
+        });
+    </script>
+
+</body>
+
+</html>
