@@ -7,7 +7,7 @@ const app = express();
 const port = 3000;
 
 app.use(cors());
-app.get('/scrape', async (req, res) => {
+app.get('/lockheed-news-scrape', async (req, res) => {
   try {
     const response = await axios.get('https://www.lockheedmartin.com/en-us/news.html');
     const $ = cheerio.load(response.data);
